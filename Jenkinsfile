@@ -10,9 +10,19 @@ pipeline {
            //     sh 'ls -la'
             //}
        // }
+        stage('Compile') {
+            steps {
+                sh 'mvn clean compile -B -ntp'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test -B -ntp'
+            }
+        }
         stage('Build') {
             steps {
-                sh 'mvn clean package -DskipTests -B -ntp'
+                sh 'mvn package -B -ntp'
             }
         }
     }
