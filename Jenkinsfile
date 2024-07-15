@@ -14,6 +14,13 @@ pipeline {
            //     sh 'ls -la'
             //}
        // }
+        stage('Sonarqube') {
+            steps {
+                withSonarQubeEnv('sonarqube'){
+                    sh 'mvn sonar:sonar -B -ntp'
+                }
+            }
+        }
         stage('Compile') {
             steps {
                 sh 'mvn clean compile -B -ntp'
