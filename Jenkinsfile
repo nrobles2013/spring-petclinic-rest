@@ -1,8 +1,12 @@
 pipeline {
-    agent any
-    tools {
-        maven 'maven3.8.8'
+    agent {
+        docker {
+            image 'maven:3.8.8-eclipse-temurin-17-alpine'
+        }
     }
+   // tools {
+   //     maven 'maven3.8.8'
+    //}
     stages {
       //  stage('Checkout SCM') {
        //     steps {
@@ -20,6 +24,9 @@ pipeline {
                 sh 'mvn test -B -ntp'
                 junit 'target/surefire-reports/*.xml'
                 jacoco()
+                script{
+                    var coverage = jacoco(execPattern: 'target/jacoco.exec',classPattern: '**/target/classes/java/main',sourcePattern:'**/target/*')
+                }
             }
         }
         stage('Build') {
