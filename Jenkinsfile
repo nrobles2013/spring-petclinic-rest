@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.8.8-eclipse-temurin-17-alpine'
-        }
-    }
+    agent none
    // tools {
    //     maven 'maven3.8.8'
     //}
