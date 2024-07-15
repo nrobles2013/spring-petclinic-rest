@@ -21,6 +21,11 @@ pipeline {
             }
         }
         stage('Test') {
+            agent {
+                docker {
+                    image 'maven:3.8.8-eclipse-temurin-17-alpine'
+                }
+            }
             steps {
                 sh 'mvn test -B -ntp'
                 junit 'target/surefire-reports/*.xml'
@@ -31,6 +36,11 @@ pipeline {
             }
         }
         stage('Build') {
+            agent {
+                docker {
+                    image 'maven:3.8.8-eclipse-temurin-17-alpine'
+                }
+            }
             steps {
                 sh 'mvn package -B -ntp'
             }
