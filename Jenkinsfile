@@ -1,5 +1,9 @@
 pipeline {
-    agent none
+    agent {
+        docker {
+            image 'maven:3.8.8-eclipse-temurin-17-alpine'
+        }
+    }
    // tools {
    //     maven 'maven3.8.8'
     //}
@@ -21,11 +25,6 @@ pipeline {
             }
         }
         stage('Test') {
-            agent {
-                docker{
-                    image 'maven:3.8.8-eclipse-temurin-17-alpine'
-                }
-            }
             steps {
                 sh 'mvn test -B -ntp'
                 junit 'target/surefire-reports/*.xml'
@@ -33,22 +32,17 @@ pipeline {
             }
         }
         stage('Package') {
-            agent {
-                docker{
-                    image 'maven:3.8.8-eclipse-temurin-17-alpine'
-                }
-            }
             steps {
                 sh 'mvn package -DskipTests -B -ntp'
             }
         }
-     //   stage('Sonarqube') {
-       //     steps {
-         //       withSonarQubeEnv('sonarqube'){
-           //         sh 'mvn sonar:sonar -B -ntp'
-             //   }
-      //      }
-       // }
+        stage('Sonarqube') {
+            steps {
+                withSonarQubeEnv('sonarqube'){
+                    sh 'mvn sonar:sonar -B -ntp'
+                }
+            }
+        }
     }
     post{
         always{
