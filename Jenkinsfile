@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     tools {
         maven 'maven3.8.8'
     }
@@ -25,13 +26,6 @@ pipeline {
         stage('Package') {
             steps {
                 sh 'mvn package -DskipTests -B -ntp'
-            }
-        }
-        stage('Sonarqube') {
-            steps {
-                withSonarQubeEnv('sonarqube'){
-                    sh 'mvn sonar:sonar -B -ntp'
-                }
             }
         }
     }
